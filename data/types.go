@@ -5,7 +5,7 @@ import "time"
 type User struct {
 	Id           int
 	Username     string
-	TotalTime    float64
+	TotalTime    time.Duration
 	MessageCount int
 	InSession    bool
 	Sessions     []Session
@@ -13,8 +13,9 @@ type User struct {
 }
 
 type Session struct {
-	Start time.Time
-	End   time.Time
+	Start    time.Time
+	End      time.Time
+	Duration time.Duration
 }
 
 type Message struct {

@@ -83,8 +83,7 @@ func Parse(path string) {
 				log.Fatal("ERROR: User", username, "not in session")
 			}
 
-			Users[username].Sessions[len(Users[username].Sessions)-1].End = timestamp
-			Users[username].InSession = false
+			EndSession(username, timestamp)
 		}
 
 		// Message sent
@@ -101,10 +100,19 @@ func Parse(path string) {
 	// End all sessions
 	for _, user := range Users {
 		if user.InSession {
-			user.Sessions[len(user.Sessions)-1].End = timestamp
-			user.InSession = false
+			EndSession(user.Username, timestamp)
 		}
 	}
 
 	util.ErrorCheck(scanner.Err())
+}
+
+func EndSession(username string, timestamp time.Time) {
+	s := Users[username].Sessions[len(Users[username].Sessions)-1]
+	s.End = timestamp
+	s.Duration = timestamp.Sub(s.Start)
+	Users[username].Sessions[len(Users[username].Sessions)-1] = s
+	Users[username].InSession = false
+
+	Users[username].TotalTime += s.Duration
 }
