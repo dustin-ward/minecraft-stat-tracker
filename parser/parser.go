@@ -3,7 +3,6 @@ package parser
 
 import (
 	"bufio"
-	"fmt"
 	"log"
 	"os"
 	"regexp"
@@ -49,7 +48,7 @@ func Parse(path string) {
 		}
 
 		timestamp = WorkingDate.Add(time.Hour*time.Duration(hrs) + time.Minute*time.Duration(mins) + time.Second*time.Duration(secs))
-		fmt.Println(timestamp)
+		// fmt.Println(timestamp)
 
 		// Joining the game
 		r, _ = regexp.Compile(`\w+ joined the game`)
@@ -94,7 +93,6 @@ func Parse(path string) {
 			Users[username].Messages = append(Users[username].Messages, message)
 			Users[username].MessageCount += 1
 		}
-		fmt.Print("\n")
 	}
 
 	// End all sessions

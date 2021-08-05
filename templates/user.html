@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logs for {{ .Title }}</title>
+</head>
+<body>
+    {{ with .User }}
+        <h1>User: {{ .Username }}</h1>
+        <h3>Sessions:</h3>
+        <h4>Total Time: {{ .TotalTime }}</h4>
+        <table>
+            <tr>
+                <td>Start</td>
+                <td>End</td>
+                <td>Duration</td>
+            </tr>
+            {{ range .Sessions }}
+                <tr>
+                    <td>{{ .Start }}</td>
+                    <td>{{ .End }}</td>
+                    <td>{{ .Duration }}</td>
+                </tr>
+            {{ end }}
+        </table>
+        {{ if .Messages}}
+            <h3>Messages:</h3>
+            <h4>Total Messages: {{ .MessageCount }}</h4>
+            <table>
+                <tr>
+                    <td>Timestamp</td>
+                    <td>Message</td>
+                </tr>
+                {{ range .Messages }}
+                    <tr>
+                        <td>{{ .Timestamp }}</td>
+                        <td>{{ .Content }}</td>
+                    </tr>
+                {{ end }}
+            </table>
+        {{ else }}
+            <p>No messages sent :(</p>
+        {{ end }}        
+        
+    {{ end }}
+</body>
+</html>
