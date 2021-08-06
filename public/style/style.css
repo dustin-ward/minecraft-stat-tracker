@@ -1,7 +1,9 @@
 @import url("https://fontlibrary.org/face/minecraftia");
 
 body {
-  background-color: orange;
+
+  /* background-image: url("https://imgur.com/a/sq0Hdvw"); */
+  font-family: Minecraftia;
 }
 
 h1 {
@@ -15,7 +17,7 @@ p {
 }
 
 .apples {
-  width: 30%;
+  width: 50%;
   background-color: lightblue;
 }
 
@@ -25,5 +27,4 @@ p {
   border: 1px solid black;
   margin: 10px;
   padding: 2.5px;
-  font:
 }
