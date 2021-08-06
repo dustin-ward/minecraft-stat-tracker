@@ -19,7 +19,7 @@
         {{ with .Users }}
             {{ range . }}
                 <tr>
-                    <td><a href="user/{{ .Username }}">
+                    <td><a href="user/{{ .Username }}" >
                         <img src="http://localhost:8080/static/images/{{ .Username }}_face.png", width="25", height="25">{{ .Username }}</a></td>
                     <td>{{ .TotalTime }}</td>
                     <td>{{ .MessageCount }}</td>
