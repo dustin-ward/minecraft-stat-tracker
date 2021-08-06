@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"html/template"
 	"log"
 	"net/http"
@@ -43,6 +44,7 @@ func main() {
 	r.HandleFunc("/", HomePage)
 	r.HandleFunc("/user/{username}", UserPage)
 	r.PathPrefix("/static/").Handler(http.StripPrefix("/static/", http.FileServer(http.Dir("./public"))))
+	fmt.Println("Page running on localhost:8080")
 	log.Fatal(http.ListenAndServe(":8080", r))
 }
 
