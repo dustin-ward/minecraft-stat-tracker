@@ -1,5 +1,5 @@
 body {
-  background-color: lightblue;
+  background-color: orange;
 }
 
 h1 {
@@ -10,4 +10,18 @@ h1 {
 p {
   font-family: verdana;
   font-size: 20px;
+}
+
+.apples {
+  width: 30%;
+  background-color: lightblue;
+}
+
+.tada {
+  background-color: lightblue;
+  color: black;
+  border: 1px solid black;
+  margin: 10px;
+  padding: 2.5px;
+  font:
 }

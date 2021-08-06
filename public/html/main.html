@@ -7,13 +7,17 @@
     <link rel="stylesheet" href="http://localhost:8080/static/style/style.css">
     <title>Minecraft Time Logs</title>
 </head>
+
+
+
+
 <body>
     <h1>{{ .Title }}</h1>
-    <table style="background-color: lightgray;">
+    <table class="apples">
         <tr>
-            <td>Username</td>
-            <td>Total Time</td>
-            <td>Messages Sent</td>
+            <td class="tada">Username</td>
+            <td class="tada">Total Time</td>
+            <td class="tada">Messages Sent</td>
         </tr>
         {{ with .Users }}
             {{ range . }}
