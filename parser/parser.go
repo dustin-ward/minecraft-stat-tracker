@@ -54,11 +54,8 @@ func Parse(path string) {
 		r, _ = regexp.Compile(`\w+ joined the game`)
 		if idx := r.FindStringIndex(line); idx != nil {
 			username := line[idx[0] : idx[1]-16]
-			if _, exists := Users[username]; !exists {
-				Users[username] = &data.User{
-					Username: username,
-					Messages: []data.Message{},
-				}
+			if !IsUser(username) {
+				CreateUser(username)
 			}
 
 			if Users[username].InSession {
@@ -74,7 +71,7 @@ func Parse(path string) {
 		r, _ = regexp.Compile(`\w+ left the game`)
 		if idx := r.FindStringIndex(line); idx != nil {
 			username := line[idx[0] : idx[1]-14]
-			if _, exists := Users[username]; !exists {
+			if !IsUser(username) {
 				log.Fatal("ERROR: User", username, "does not exist")
 			}
 
@@ -103,6 +100,21 @@ func Parse(path string) {
 	}
 
 	util.ErrorCheck(scanner.Err())
+}
+
+func CreateUser(username string) {
+	Users[username] = &data.User{
+		Username: username,
+	}
+	util.GetFace(username)
+}
+
+func IsUser(username string) bool {
+	if _, exists := Users[username]; exists {
+		return true
+	} else {
+		return false
+	}
 }
 
 func EndSession(username string, timestamp time.Time) {

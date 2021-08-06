@@ -42,6 +42,8 @@ func main() {
 	r := mux.NewRouter()
 	r.HandleFunc("/", HomePage)
 	r.HandleFunc("/user/{username}", UserPage)
+	// r.Handle("/images", http.StripPrefix("/images", http.FileServer(http.Dir("public/images"))))
+	r.PathPrefix("/static/").Handler(http.StripPrefix("/static/", http.FileServer(http.Dir("./public/images/"))))
 	log.Fatal(http.ListenAndServe(":8080", r))
 }
 
@@ -51,7 +53,7 @@ func HomePage(w http.ResponseWriter, r *http.Request) {
 		Users: parser.Users,
 	}
 
-	t, err := template.ParseFiles("templates/main.html")
+	t, err := template.ParseFiles("public/html/main.html")
 	if err != nil {
 		log.Print("template parsing error: ", err)
 	}
@@ -75,7 +77,7 @@ func UserPage(w http.ResponseWriter, r *http.Request) {
 				User:  user,
 			}
 
-			t, err := template.ParseFiles("templates/user.html")
+			t, err := template.ParseFiles("public/html/user.html")
 			if err != nil {
 				log.Print("template parsing error: ", err)
 			}

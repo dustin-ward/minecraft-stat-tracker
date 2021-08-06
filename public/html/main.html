@@ -8,7 +8,7 @@
 </head>
 <body>
     <h1>{{ .Title }}</h1>
-    <table>
+    <table style="background-color: lightgray;">
         <tr>
             <td>Username</td>
             <td>Total Time</td>
@@ -17,7 +17,8 @@
         {{ with .Users }}
             {{ range . }}
                 <tr>
-                    <td><a href="user/{{ .Username }}">{{ .Username }}</a></td>
+                    <td><a href="user/{{ .Username }}">
+                        <img src="http://localhost:8080/static/{{ .Username }}_face.png", width="25", height="25">{{ .Username }}</a></td>
                     <td>{{ .TotalTime }}</td>
                     <td>{{ .MessageCount }}</td>
                 </tr>
