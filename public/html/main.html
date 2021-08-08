@@ -9,22 +9,24 @@
 </head>
 <body>
     <h1>{{ .Title }}</h1>
-    <table style="background-color: lightgray;">
-        <tr>
-            <td>Username</td>
-            <td>Total Time</td>
-            <td>Messages Sent</td>
-        </tr>
-        {{ with .Users }}
-            {{ range . }}
-                <tr>
-                    <td><a href="user/{{ .Username }}">
-                        <img src="http://localhost:8080/static/images/{{ .Username }}_face.png", width="25", height="25">{{ .Username }}</a></td>
-                    <td>{{ .TotalTime }}</td>
-                    <td>{{ .MessageCount }}</td>
-                </tr>
+    <div class="user-table">
+        <table>
+            <tr class="table-header">
+                <th>Username</th>
+                <th>Total Time</th>
+                <th>Messages Sent</th>
+            </tr>
+            {{ with .Users }}
+                {{ range . }}
+                    <tr class="table-row">
+                        <td><a href="user/{{ .Username }}">
+                            <img src="http://localhost:8080/static/images/{{ .Username }}_face.png", width="25", height="25" class="pfp">{{ .Username }}</a></td>
+                        <td>{{ .TotalTime }}</td>
+                        <td>{{ .MessageCount }}</td>
+                    </tr>
+                {{ end }}
             {{ end }}
-        {{ end }}
-    </table>
+        </table>
+    </div>
 </body>
 </html>

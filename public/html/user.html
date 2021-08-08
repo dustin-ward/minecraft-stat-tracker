@@ -9,38 +9,43 @@
 </head>
 <body>
     {{ with .User }}
-        <h1>User: {{ .Username }} <img src="http://localhost:8080/static/images/{{ .Username }}_face.png"></h1>
+        <img src="http://localhost:8080/static/images/{{ .Username }}_face.png" class="main-pfp">
+        <h1>User: {{ .Username }}</h1>
         <h3>Sessions:</h3>
         <h4>Total Time: {{ .TotalTime }}</h4>
-        <table style="background-color: lightgray;">
-            <tr>
-                <td>Start</td>
-                <td>End</td>
-                <td>Duration</td>
-            </tr>
-            {{ range .Sessions }}
-                <tr>
-                    <td>{{ .Start }}</td>
-                    <td>{{ .End }}</td>
-                    <td>{{ .Duration }}</td>
-                </tr>
-            {{ end }}
-        </table>
+            <div class="user-table"></div>
+                <table>
+                    <tr class="table-header">
+                        <th>Start</th>
+                        <th>End</th>
+                        <th>Duration</th>
+                    </tr>
+                    {{ range .Sessions }}
+                        <tr class="table-row">
+                            <td>{{ .Start }}</td>
+                            <td>{{ .End }}</td>
+                            <td>{{ .Duration }}</td>
+                        </tr>
+                    {{ end }}
+                </table>
+            </div>
         {{ if .Messages}}
             <h3>Messages:</h3>
             <h4>Total Messages: {{ .MessageCount }}</h4>
-            <table style="background-color: lightgray;">
-                <tr>
-                    <td>Timestamp</td>
-                    <td>Message</td>
-                </tr>
-                {{ range .Messages }}
-                    <tr>
-                        <td>{{ .Timestamp }}</td>
-                        <td>{{ .Content }}</td>
+            <div class="user-table">
+                <table>
+                    <tr class="table-header">
+                        <td>Timestamp</td>
+                        <td>Message</td>
                     </tr>
-                {{ end }}
-            </table>
+                    {{ range .Messages }}
+                        <tr class='table-row'>
+                            <td>{{ .Timestamp }}</td>
+                            <td>{{ .Content }}</td>
+                        </tr>
+                    {{ end }}
+                </table>
+            </div>
         {{ else }}
             <p>No messages sent :(</p>
         {{ end }}        
