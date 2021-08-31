@@ -83,10 +83,11 @@ func Parse(path string) {
 		}
 
 		// Message sent
-		r, _ = regexp.Compile(`<.+>`)
+		r, _ = regexp.Compile(`: <.+>`)
 		if idx := r.FindStringIndex(line); idx != nil {
-			username := line[idx[0]+1 : idx[1]-1]
+			username := line[idx[0]+3 : idx[1]-1]
 			message := data.Message{Timestamp: timestamp, Content: line[idx[1]+1:]}
+			// fmt.Println("Found msg", message, "from", username)
 			Users[username].Messages = append(Users[username].Messages, message)
 			Users[username].MessageCount += 1
 		}

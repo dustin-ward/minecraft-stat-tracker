@@ -22,6 +22,7 @@ type PageVariables struct {
 func main() {
 	dir, _ := os.Getwd()
 	parser.Parse(dir + "/logs_1.txt")
+	parser.Parse(dir + "/logs_2.txt")
 
 	// fmt.Println(parser.WorkingDate)
 
