@@ -2,93 +2,37 @@ package main
 
 import (
 	"fmt"
-	"html/template"
 	"log"
 	"net/http"
 	"os"
+	"path/filepath"
 
-	"github.com/dustin-ward/minecraft-time-logging/data"
 	"github.com/dustin-ward/minecraft-time-logging/parser"
+	"github.com/dustin-ward/minecraft-time-logging/routes"
+	"github.com/dustin-ward/minecraft-time-logging/util"
 
 	"github.com/gorilla/mux"
 )
 
-type PageVariables struct {
-	Title string
-	Users map[string]*data.User
-	User  *data.User
-}
-
 func main() {
+	// Parse each log file in /logs/
 	dir, _ := os.Getwd()
-	parser.Parse(dir + "/logs_1.txt")
-	parser.Parse(dir + "/logs_2.txt")
+	err := filepath.Walk(dir+"/logs/", func(path string, info os.FileInfo, err error) error {
+		if info.IsDir() {
+			return nil
+		}
+		if filepath.Ext(path) == ".log" {
+			parser.Parse(path)
+		}
+		return nil
+	})
+	util.ErrorCheck(err)
 
-	// fmt.Println(parser.WorkingDate)
-
-	// for _, user := range parser.Users {
-	// 	fmt.Println("=USER=====================")
-	// 	fmt.Println("Username:", user.Username)
-	// 	fmt.Println("TotalMessages:", user.MessageCount)
-	// 	fmt.Println("Messages:")
-	// 	for _, m := range user.Messages {
-	// 		fmt.Println("   ", m.Timestamp, m.Content)
-	// 	}
-	// 	fmt.Println("TotalTime:", user.TotalTime)
-	// 	fmt.Println("Sessions:")
-	// 	for _, s := range user.Sessions {
-	// 		fmt.Println("    Start:", s.Start, " End:", s.End, "Duration:", s.Duration)
-	// 	}
-	// }
-
+	// Setup HTTP router
 	r := mux.NewRouter()
-	r.HandleFunc("/", HomePage)
-	r.HandleFunc("/user/{username}", UserPage)
+	r.HandleFunc("/", routes.HomePage)
+	r.HandleFunc("/user/{username}", routes.UserPage)
 	r.PathPrefix("/static/").Handler(http.StripPrefix("/static/", http.FileServer(http.Dir("./public"))))
 	fmt.Println("Page running on localhost:8080")
 	log.Fatal(http.ListenAndServe(":8080", r))
-}
-
-func HomePage(w http.ResponseWriter, r *http.Request) {
-	PageVariables := PageVariables{
-		Title: "Users:",
-		Users: parser.Users,
-	}
-
-	t, err := template.ParseFiles("public/html/main.html")
-	if err != nil {
-		log.Print("template parsing error: ", err)
-	}
-
-	err = t.Execute(w, PageVariables)
-	if err != nil {
-		log.Print("template executing error: ", err)
-	}
-}
-
-func UserPage(w http.ResponseWriter, r *http.Request) {
-	vars := mux.Vars(r)
-	if username, ok := vars["username"]; !ok {
-		log.Fatal("Missing username in params")
-	} else {
-		if user, exists := parser.Users[username]; !exists {
-			w.Write([]byte("User doesnt exist"))
-		} else {
-			PageVariables := PageVariables{
-				Title: username,
-				User:  user,
-			}
-
-			t, err := template.ParseFiles("public/html/user.html")
-			if err != nil {
-				log.Print("template parsing error: ", err)
-			}
-
-			err = t.Execute(w, PageVariables)
-			if err != nil {
-				log.Print("template executing error: ", err)
-			}
-		}
-	}
-
 }
