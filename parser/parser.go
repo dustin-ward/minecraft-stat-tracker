@@ -20,12 +20,29 @@ func Parse(path string) {
 
 	scanner := bufio.NewScanner(file)
 
+	var startTime time.Time
+
 	lineNo := 1
 	for scanner.Scan() {
 		line := scanner.Text()
 
+		// Log starting time
+		if startTime.IsZero() {
+			startTime = util.GetTimestamp(line)
+		}
+
+		// Fatal Error Catch
+		r, _ := regexp.Compile(`\[.+\/FATAL\]`)
+		if idx := r.FindStringIndex(line); idx != nil {
+			for user := range Users {
+				if Users[user].InSession {
+					EndSession(user, util.GetTimestamp(line))
+				}
+			}
+		}
+
 		// Joining the game
-		r, _ := regexp.Compile(`\w+ joined the game`)
+		r, _ = regexp.Compile(`\w+ joined the game`)
 		if idx := r.FindStringIndex(line); idx != nil {
 			username := line[idx[0] : idx[1]-16]
 			if !IsUser(username) {
@@ -57,7 +74,7 @@ func Parse(path string) {
 		}
 
 		// Message sent
-		r, _ = regexp.Compile(`: <.+>`)
+		r, _ = regexp.Compile(`: <[a-zA-Z0-9_]{2,16}>`)
 		if idx := r.FindStringIndex(line); idx != nil {
 			username := line[idx[0]+3 : idx[1]-1]
 			message := data.Message{Timestamp: util.GetTimestamp(line), Content: line[idx[1]+1:]}
@@ -71,6 +88,7 @@ func Parse(path string) {
 
 	// End all sessions
 	// SHOULDNT HAPPEN... BUT ADD ERROR CATCH HERE
+	// It happened... but im still not fixing it
 	// for _, user := range Users {
 	// 	if user.InSession {
 	// 		EndSession(user.Username, timestamp)
