@@ -1,15 +1,12 @@
 <template>
     <div class="PlayerList">
         <table>
-            <tr>
-                <td>Username</td>
-                <td>Total Play Time</td>
-                <td>Messages Sent</td>
+            <tr class="table-header">
+                <th>Username</th>
+                <th>Total Play Time</th>
+                <th>Messages Sent</th>
             </tr>
-            <tr :key="User.Username" v-for="User in users">
-                <!-- <p>{{User.Username}}</p> -->
-                <PlayerListItem :user="User"/>
-            </tr>
+            <PlayerListItem v-for="User in users" :key="User.Username" :user="User"/>
         </table>
     </div>
 </template>
@@ -28,5 +25,25 @@ export default {
 </script>
 
 <style>
+table {
+  margin-left: auto;
+  margin-right: auto;
+}
 
+.PlayerList {
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+  padding: 10px;
+}
+
+.table-header {
+  background-color: #585858;
+  color: rgb(243, 243, 243);
+  text-align: center;
+}
+
+.table-header th {
+  padding: 0px 10px;
+}
 </style>

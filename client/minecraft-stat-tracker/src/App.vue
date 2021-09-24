@@ -20,18 +20,20 @@ export default {
         }
     },
     created() {
+        require("./assets/ShrubLord15_face.png")
+        require("./assets/BDeltaC_face.png")
         this.Users = [
             {
                 Username: "ShrubLord15",
                 TotalTime: "99h99m99s",
                 MessageCount: 999,
-                FacePic: "https://randomuser.me/api/portraits/men/10.jpg"
+                FacePic: "../assets/ShrubLord15_face.png"
             },
             {
                 Username: "BDeltaC",
                 TotalTime: "929h929m929s",
                 MessageCount: 2131,
-                FacePic: "https://randomuser.me/api/portraits/men/10.jpg"
+                FacePic: "../assets/BDeltaC_face.png"
             }
         ]
     }
@@ -39,12 +41,19 @@ export default {
 </script>
 
 <style>
+@import url("https://fontlibrary.org/face/minecraftia");
+
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
+  color: #ffffff;
   margin-top: 60px;
 }
+
+body {
+  background-image: url("https://wallpaperaccess.com/full/6104111.png");
+  font-family: Minecraftia;
+}
+
 </style>
