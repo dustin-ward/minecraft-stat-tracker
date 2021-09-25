@@ -1,7 +1,8 @@
 package routes
 
 import (
-	"html/template"
+	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
 
@@ -18,48 +19,38 @@ type PageVariables struct {
 
 // Starting page with all users
 //
-func HomePage(w http.ResponseWriter, r *http.Request) {
-	PageVariables := PageVariables{
-		Title: "Users:",
-		Users: parser.Users,
-	}
+func TestFunc(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("Endpoint Hit: '/'")
 
-	t, err := template.ParseFiles("public/html/main.html")
-	if err != nil {
-		log.Print("template parsing error: ", err)
-	}
-
-	err = t.Execute(w, PageVariables)
-	if err != nil {
-		log.Print("template executing error: ", err)
-	}
+	w.Header().Set("content-type", "application/json")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	fmt.Fprintf(w, "Minecraft Stat-tracker API is operational!")
 }
 
-// Page for an individual player
+// Return list of all users
 //
-func UserPage(w http.ResponseWriter, r *http.Request) {
+func GetPlayers(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("Endpoint Hit: '/players'")
+
+	w.Header().Set("content-type", "application/json")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	json.NewEncoder(w).Encode(parser.Users)
+}
+
+// Return an individual user
+//
+func GetPlayer(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("content-type", "application/json")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
 	vars := mux.Vars(r)
 	if username, ok := vars["username"]; !ok {
-		log.Fatal("Missing username in params")
+		log.Fatal("GetPlayer: Missing username in params")
 	} else {
 		if user, exists := parser.Users[username]; !exists {
 			w.Write([]byte("User doesnt exist"))
 		} else {
-			PageVariables := PageVariables{
-				Title: username,
-				User:  user,
-			}
-
-			t, err := template.ParseFiles("public/html/user.html")
-			if err != nil {
-				log.Print("template parsing error: ", err)
-			}
-
-			err = t.Execute(w, PageVariables)
-			if err != nil {
-				log.Print("template executing error: ", err)
-			}
+			fmt.Println("Endpoint Hit: '/player/" + user.Username + "'")
+			json.NewEncoder(w).Encode(user)
 		}
 	}
-
 }

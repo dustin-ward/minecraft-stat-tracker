@@ -30,9 +30,10 @@ func main() {
 
 	// Setup HTTP router
 	r := mux.NewRouter()
-	r.HandleFunc("/", routes.HomePage)
-	r.HandleFunc("/user/{username}", routes.UserPage)
+	r.HandleFunc("/", routes.TestFunc)
+	r.HandleFunc("/players", routes.GetPlayers)
+	r.HandleFunc("/player/{username}", routes.GetPlayer)
 	r.PathPrefix("/static/").Handler(http.StripPrefix("/static/", http.FileServer(http.Dir("./public"))))
-	fmt.Println("Page running on localhost:8080")
-	log.Fatal(http.ListenAndServe(":8080", r))
+	fmt.Println("Page running on localhost:8081")
+	log.Fatal(http.ListenAndServe(":8081", r))
 }

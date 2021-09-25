@@ -20,22 +20,21 @@ export default {
         }
     },
     created() {
-        require("./assets/ShrubLord15_face.png")
-        require("./assets/BDeltaC_face.png")
-        this.Users = [
-            {
-                Username: "ShrubLord15",
-                TotalTime: "99h99m99s",
-                MessageCount: 999,
-                FacePic: "../assets/ShrubLord15_face.png"
-            },
-            {
-                Username: "BDeltaC",
-                TotalTime: "929h929m929s",
-                MessageCount: 2131,
-                FacePic: "../assets/BDeltaC_face.png"
-            }
-        ]
+      fetch("http://localhost:8081/players")
+        .then(response => response.json())
+        .then(data => (this.Users = data));
+        // this.Users = [
+        //     {
+        //         Username: "ShrubLord15",
+        //         TotalTime: "99h99m99s",
+        //         MessageCount: 999
+        //     },
+        //     {
+        //         Username: "BDeltaC",
+        //         TotalTime: "929h929m929s",
+        //         MessageCount: 2131
+        //     }
+        // ]
     }
 }
 </script>

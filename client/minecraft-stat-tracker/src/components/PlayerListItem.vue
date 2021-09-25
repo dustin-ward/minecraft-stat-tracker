@@ -1,6 +1,10 @@
 <template>
     <tr class="table-row">
-        <td><a href=""><img :src="user.FacePic" :alt="user.Username" class="pfp"></a>{{user.Username}}</td>
+        <td class="username">
+          <a href=""><img :src="`http://localhost:8081/static/images/${user.Username}_face.png`"
+                          width="25" height="25"
+                          :alt="user.Username" class="pfp">{{user.Username}}</a>
+        </td>
         <td>{{user.TotalTime}}</td>
         <td>{{user.MessageCount}}</td>
     </tr>
@@ -34,5 +38,9 @@ export default {
   display: block;
   margin-left: auto;
   margin-right: auto;
+}
+
+.username {
+  text-align: left;
 }
 </style>
