@@ -32,55 +32,56 @@ func Parse(path string) {
 		}
 
 		// Fatal Error Catch
-		r, _ := regexp.Compile(`\[.+\/FATAL\]`)
+		r, _ := regexp.Compile(`\[.+\/FATAL\].+crash`)
 		if idx := r.FindStringIndex(line); idx != nil {
-			for user := range Users {
-				if Users[user].InSession {
-					EndSession(user, util.GetTimestamp(line))
-				}
-			}
+			// for user := range Users {
+			// 	if Users[user].InSession {
+			// 		EndSession(user, util.GetTimestamp(line))
+			// 	}
+			// }
 		}
 
 		// Joining the game
 		r, _ = regexp.Compile(`\w+ joined the game`)
 		if idx := r.FindStringIndex(line); idx != nil {
 			username := line[idx[0] : idx[1]-16]
-			if !IsUser(username) {
-				CreateUser(username)
-			}
+			data.CreateUser(username)
+			// if !IsUser(username) {
+			// 	CreateUser(username)
+			// }
 
-			if Users[username].InSession {
-				util.ParsingError(path, lineNo, "User "+username+" already in session")
-			}
+			// if Users[username].InSession {
+			// 	util.ParsingError(path, lineNo, "User "+username+" already in session")
+			// }
 
-			session := data.Session{Start: util.GetTimestamp(line)}
-			Users[username].InSession = true
-			Users[username].Sessions = append(Users[username].Sessions, session)
+			// session := data.Session{Start: util.GetTimestamp(line)}
+			// Users[username].InSession = true
+			// Users[username].Sessions = append(Users[username].Sessions, session)
 		}
 
 		// Leaving the game
 		r, _ = regexp.Compile(`\w+ left the game`)
 		if idx := r.FindStringIndex(line); idx != nil {
-			username := line[idx[0] : idx[1]-14]
-			if !IsUser(username) {
-				util.ParsingError(path, lineNo, "User "+username+" does not exist")
-			}
+			// username := line[idx[0] : idx[1]-14]
+			// if !IsUser(username) {
+			// 	util.ParsingError(path, lineNo, "User "+username+" does not exist")
+			// }
 
-			if !Users[username].InSession {
-				util.ParsingError(path, lineNo, "User "+username+" not in session")
-			}
+			// if !Users[username].InSession {
+			// 	util.ParsingError(path, lineNo, "User "+username+" not in session")
+			// }
 
-			EndSession(username, util.GetTimestamp(line))
+			// EndSession(username, util.GetTimestamp(line))
 		}
 
 		// Message sent
 		r, _ = regexp.Compile(`: <[a-zA-Z0-9_]{2,16}>`)
 		if idx := r.FindStringIndex(line); idx != nil {
-			username := line[idx[0]+3 : idx[1]-1]
-			message := data.Message{Timestamp: util.GetTimestamp(line), Content: line[idx[1]+1:]}
-			// fmt.Println("Found msg", message, "from", username)
-			Users[username].Messages = append(Users[username].Messages, message)
-			Users[username].MessageCount += 1
+			// username := line[idx[0]+3 : idx[1]-1]
+			// message := data.Message{Timestamp: util.GetTimestamp(line), Content: line[idx[1]+1:]}
+			// // fmt.Println("Found msg", message, "from", username)
+			// Users[username].Messages = append(Users[username].Messages, message)
+			// Users[username].MessageCount += 1
 		}
 
 		lineNo++
@@ -98,13 +99,6 @@ func Parse(path string) {
 	util.ErrorCheck(scanner.Err())
 }
 
-func CreateUser(username string) {
-	Users[username] = &data.User{
-		Username: username,
-	}
-	util.GetFace(username)
-}
-
 func IsUser(username string) bool {
 	if _, exists := Users[username]; exists {
 		return true
@@ -113,12 +107,12 @@ func IsUser(username string) bool {
 	}
 }
 
-func EndSession(username string, timestamp time.Time) {
-	s := Users[username].Sessions[len(Users[username].Sessions)-1]
-	s.End = timestamp
-	s.Duration = timestamp.Sub(s.Start)
-	Users[username].Sessions[len(Users[username].Sessions)-1] = s
-	Users[username].InSession = false
+// func EndSession(username string, timestamp time.Time) {
+// 	s := Users[username].Sessions[len(Users[username].Sessions)-1]
+// 	s.End = timestamp
+// 	s.Duration = timestamp.Sub(s.Start)
+// 	Users[username].Sessions[len(Users[username].Sessions)-1] = s
+// 	Users[username].InSession = false
 
-	Users[username].TotalTime += s.Duration
-}
+// 	Users[username].TotalTime += s.Duration
+// }

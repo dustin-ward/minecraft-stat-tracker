@@ -1,0 +1,30 @@
+CREATE TABLE players (
+    username        varchar(16)     PRIMARY KEY,
+    totalTime       int(32)         UNSIGNED DEFAULT 0,
+    messageCount    int(32)         UNSIGNED DEFAULT 0,
+    deathCount      int(32)         UNSIGNED DEFAULT 0
+);
+
+CREATE TABLE messages (
+    id              int(32)         UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    user            varchar(16)     NOT NULL,
+    content         varchar(255)    NOT NULL,
+    timestamp       datetime        NOT NULL,
+    FOREIGN KEY (user) REFERENCES players(username)
+);
+
+CREATE TABLE sessions (
+    id              int(32)         UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    user            varchar(16)     NOT NULL,
+    start           datetime        NOT NULL,
+    end             datetime        NOT NULL,
+    FOREIGN KEY (user) REFERENCES players(username)
+);
+
+CREATE TABLE deaths (
+    id              int(32)         UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    user            varchar(16)     NOT NULL,
+    content         varchar(255)    NOT NULL,
+    timestamp       datetime        NOT NULL,
+    FOREIGN KEY (user) REFERENCES players(username)
+);

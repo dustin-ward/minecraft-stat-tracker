@@ -49,7 +49,7 @@ func GetPlayer(w http.ResponseWriter, r *http.Request) {
 		if user, exists := parser.Users[username]; !exists {
 			w.Write([]byte("User doesnt exist"))
 		} else {
-			fmt.Println("Endpoint Hit: '/player/" + user.Username + "'")
+			fmt.Println("Endpoint Hit: '/player/" + user.username + "'")
 			json.NewEncoder(w).Encode(user)
 		}
 	}
