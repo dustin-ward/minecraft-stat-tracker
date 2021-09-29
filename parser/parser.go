@@ -32,7 +32,7 @@ func Parse(path string) {
 		}
 
 		// Fatal Error Catch
-		r, _ := regexp.Compile(`\[.+\/FATAL\]`)
+		r, _ := regexp.Compile(`\[.+\/FATAL\].+crash`)
 		if idx := r.FindStringIndex(line); idx != nil {
 			for user := range Users {
 				if Users[user].InSession {
